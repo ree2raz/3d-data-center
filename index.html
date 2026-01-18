@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Chaotic Mainframe</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-title">THE CHAOTIC MAINFRAME</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div class="loading-text">INITIALIZING SYSTEM...</div>
+        </div>
+    </div>
+
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- HUD Overlay -->
+        <div id="hud">
+            <div id="coordinates">
+                <span class="label">COORDS:</span>
+                <span id="coord-x">X: 0.00</span>
+                <span id="coord-y">Y: 0.00</span>
+                <span id="coord-z">Z: 0.00</span>
+            </div>
+            <div id="system-status">SYSTEM STATUS: <span class="blink">UNSTABLE</span></div>
+            <div id="minimap">
+                <canvas id="minimap-canvas"></canvas>
+                <div class="minimap-label">RADAR</div>
+            </div>
+        </div>
+
+        <!-- Debug Mode Toggle -->
+        <button id="debug-toggle">DEBUG_MODE</button>
+
+        <!-- Interaction Reticle -->
+        <div id="reticle">
+            <div class="reticle-ring"></div>
+            <div class="reticle-dot"></div>
+        </div>
+
+        <!-- Interaction Prompt -->
+        <div id="interact-prompt" class="hidden">
+            <span class="prompt-key">[CLICK]</span>
+            <span class="prompt-text">EXECUTE</span>
+        </div>
+
+        <!-- Project Overlay -->
+        <div id="project-overlay" class="hidden">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="terminal-title">PROJECT_DATA.exe</span>
+                    <button class="terminal-close">[X]</button>
+                </div>
+                <div class="terminal-content">
+                    <div id="project-title" class="terminal-line"></div>
+                    <div id="project-description" class="terminal-line"></div>
+                    <div id="project-tech" class="terminal-line"></div>
+                    <div id="project-link" class="terminal-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Me Overlay (Chaos Core) -->
+        <div id="about-overlay" class="hidden">
+            <div class="core-window">
+                <div class="core-header">
+                    <span>CHAOS_CORE // ARCHITECT_DATA</span>
+                    <button class="core-close">[X]</button>
+                </div>
+                <div class="core-content">
+                    <div class="core-section">
+                        <div class="stat-label">DESIGNATION:</div>
+                        <div class="stat-value" id="about-name">THE ARCHITECT</div>
+                    </div>
+                    <div class="core-section">
+                        <div class="stat-label">FUNCTION:</div>
+                        <div class="stat-value" id="about-role">Full-Stack Developer</div>
+                    </div>
+                    <div class="core-section">
+                        <div class="stat-label">BIO_DATA:</div>
+                        <div class="stat-value" id="about-bio">A digital architect who thrives in chaos, building order from the entropy of code. Specializing in creating immersive web experiences and robust backend systems.</div>
+                    </div>
+                    <div class="core-section">
+                        <div class="stat-label">CHAOS_LEVEL:</div>
+                        <div class="chaos-bar">
+                            <div class="chaos-fill"></div>
+                        </div>
+                        <div class="stat-value">MAXIMUM</div>
+                    </div>
+                    <div class="core-section">
+                        <div class="stat-label">SKILLS_MATRIX:</div>
+                        <div class="skills-grid">
+                            <span class="skill">JavaScript</span>
+                            <span class="skill">Three.js</span>
+                            <span class="skill">WebGL</span>
+                            <span class="skill">React</span>
+                            <span class="skill">Node.js</span>
+                            <span class="skill">Python</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Out Door Prompt -->
+        <div id="logout-prompt" class="hidden">
+            <div class="logout-window">
+                <div class="logout-text">TERMINATE SESSION?</div>
+                <button id="logout-confirm">[CONFIRM_LOGOUT]</button>
+                <button id="logout-cancel">[CANCEL]</button>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div id="instructions">
+            <div>WASD - MOVE</div>
+            <div>MOUSE - LOOK</div>
+            <div>CLICK - INTERACT</div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>

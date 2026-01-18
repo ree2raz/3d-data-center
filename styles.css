@@ -1,0 +1,757 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'Terminal';
+    src: local('Courier New'), local('Consolas'), local('monospace');
+}
+
+body {
+    font-family: 'Courier New', Consolas, monospace;
+    background: #000;
+    color: #00ff00;
+    overflow: hidden;
+    cursor: none;
+}
+
+/* Loading Screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.5s ease;
+}
+
+#loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-title {
+    font-size: 2.5rem;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+    margin-bottom: 2rem;
+    letter-spacing: 0.5rem;
+}
+
+.loading-bar {
+    width: 300px;
+    height: 4px;
+    background: #1a1a1a;
+    border: 1px solid #00ff00;
+    margin: 0 auto 1rem;
+}
+
+.loading-progress {
+    height: 100%;
+    background: #00ff00;
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.loading-text {
+    font-size: 0.8rem;
+    color: #00ff00;
+    animation: blink 1s infinite;
+}
+
+/* Game Container */
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#game-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* HUD */
+#hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#coordinates {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 0.75rem;
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: 1px solid #00ff0044;
+}
+
+#coordinates .label {
+    color: #ff6600;
+}
+
+#coordinates span {
+    display: block;
+    margin: 2px 0;
+}
+
+#system-status {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 0.75rem;
+    color: #ff6600;
+    text-shadow: 0 0 5px #ff6600;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border: 1px solid #ff660044;
+}
+
+.blink {
+    animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Minimap */
+#minimap {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 150px;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #00ff00;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+#minimap-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.minimap-label {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: #00ff00;
+}
+
+/* Debug Toggle */
+#debug-toggle {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    border: 2px solid #00ff00;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px #00ff00;
+    pointer-events: auto;
+}
+
+#debug-toggle:hover {
+    background: #00ff00;
+    color: #000;
+    box-shadow: 0 0 20px #00ff00;
+}
+
+#debug-toggle.active {
+    background: #00ff00;
+    color: #000;
+    box-shadow: 0 0 30px #00ff00;
+}
+
+/* Reticle */
+#reticle {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 50;
+}
+
+.reticle-ring {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #00ff00;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.reticle-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 4px;
+    height: 4px;
+    background: #00ff00;
+    border-radius: 50%;
+}
+
+#reticle.locked .reticle-ring {
+    border-color: #ff6600;
+    width: 40px;
+    height: 40px;
+    animation: pulse 0.5s infinite;
+}
+
+#reticle.locked .reticle-dot {
+    background: #ff6600;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+}
+
+/* Interaction Prompt */
+#interact-prompt {
+    position: fixed;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 50;
+}
+
+#interact-prompt.hidden {
+    display: none;
+}
+
+.prompt-key {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff6600;
+    margin-bottom: 5px;
+}
+
+.prompt-text {
+    display: block;
+    font-size: 1.2rem;
+    color: #00ff00;
+    text-shadow: 0 0 10px #00ff00;
+    letter-spacing: 0.3rem;
+}
+
+/* Terminal Window (Project Overlay) */
+#project-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    backdrop-filter: blur(5px);
+}
+
+#project-overlay.hidden {
+    display: none;
+}
+
+.terminal-window {
+    width: 600px;
+    max-width: 90%;
+    background: #0a0a0a;
+    border: 2px solid #00ff00;
+    box-shadow: 0 0 30px #00ff0044, inset 0 0 50px rgba(0, 255, 0, 0.05);
+    animation: crtOn 0.3s ease;
+}
+
+@keyframes crtOn {
+    0% { 
+        transform: scaleY(0.01) scaleX(0.5);
+        filter: brightness(10);
+    }
+    50% { 
+        transform: scaleY(0.01) scaleX(1);
+    }
+    100% { 
+        transform: scaleY(1) scaleX(1);
+        filter: brightness(1);
+    }
+}
+
+.terminal-header {
+    background: #00ff00;
+    color: #000;
+    padding: 8px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.terminal-title {
+    font-weight: bold;
+}
+
+.terminal-close {
+    background: none;
+    border: none;
+    color: #000;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.terminal-close:hover {
+    color: #ff0000;
+}
+
+.terminal-content {
+    padding: 20px;
+    color: #00ff00;
+    line-height: 1.8;
+}
+
+.terminal-line {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.terminal-line::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    color: #ff6600;
+}
+
+/* Core Window (About Overlay) */
+#about-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+#about-overlay.hidden {
+    display: none;
+}
+
+.core-window {
+    width: 700px;
+    max-width: 90%;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%);
+    border: 2px solid #ff6600;
+    box-shadow: 0 0 50px #ff660044, 0 0 100px #ff660022;
+    animation: coreExpand 0.5s ease;
+}
+
+@keyframes coreExpand {
+    0% { 
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.core-header {
+    background: linear-gradient(90deg, #ff6600, #ff3300);
+    color: #000;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.core-close {
+    background: none;
+    border: none;
+    color: #000;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.core-content {
+    padding: 30px;
+}
+
+.core-section {
+    margin: 20px 0;
+}
+
+.stat-label {
+    color: #ff6600;
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    color: #00ff00;
+    font-size: 1rem;
+    padding-left: 15px;
+    border-left: 2px solid #ff6600;
+}
+
+.chaos-bar {
+    width: 100%;
+    height: 20px;
+    background: #1a1a1a;
+    border: 1px solid #ff6600;
+    margin: 10px 0;
+    overflow: hidden;
+}
+
+.chaos-fill {
+    height: 100%;
+    width: 95%;
+    background: linear-gradient(90deg, #ff6600, #ff0000);
+    animation: chaosGlow 1s infinite alternate;
+}
+
+@keyframes chaosGlow {
+    0% { box-shadow: inset 0 0 10px #ff6600; }
+    100% { box-shadow: inset 0 0 30px #ff0000; }
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skill {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid #00ff00;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+    color: #00ff00;
+}
+
+/* Logout Prompt */
+#logout-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+#logout-prompt.hidden {
+    display: none;
+}
+
+.logout-window {
+    text-align: center;
+    padding: 40px;
+    background: #0a0a0a;
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 30px #ff000044;
+}
+
+.logout-text {
+    font-size: 1.5rem;
+    color: #ff0000;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px #ff0000;
+}
+
+#logout-confirm, #logout-cancel {
+    background: none;
+    border: 2px solid;
+    padding: 10px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#logout-confirm {
+    border-color: #ff0000;
+    color: #ff0000;
+}
+
+#logout-confirm:hover {
+    background: #ff0000;
+    color: #000;
+}
+
+#logout-cancel {
+    border-color: #00ff00;
+    color: #00ff00;
+}
+
+#logout-cancel:hover {
+    background: #00ff00;
+    color: #000;
+}
+
+/* Instructions */
+#instructions {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.7rem;
+    color: #00ff0088;
+    text-align: right;
+    pointer-events: none;
+}
+
+#instructions div {
+    margin: 3px 0;
+}
+
+/* Scanline Effect */
+#game-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00ff00;
+}
+
+/* Hidden utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Additional Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+    52% { opacity: 1; }
+    54% { opacity: 0.9; }
+    56% { opacity: 1; }
+}
+
+/* Pointer Lock Message */
+#game-container::before {
+    content: 'CLICK TO ENGAGE SYSTEM';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #00ff00;
+    font-size: 1.5rem;
+    text-shadow: 0 0 20px #00ff00;
+    z-index: 50;
+    animation: blink 1s infinite;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+body.locked #game-container::before {
+    opacity: 0;
+}
+
+/* Vignette Effect */
+#game-container .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
+    pointer-events: none;
+    z-index: 49;
+}
+
+/* CRT Curve Effect (optional) */
+.crt-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+    background: linear-gradient(
+        rgba(0, 0, 0, 0) 50%,
+        rgba(0, 0, 0, 0.02) 50%
+    );
+    background-size: 100% 4px;
+}
+
+/* Glowing Text */
+.glow {
+    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+/* Terminal Link Styles */
+.terminal-content a {
+    color: #00ff00;
+    text-decoration: none;
+    border-bottom: 1px solid #00ff0044;
+    transition: all 0.3s ease;
+}
+
+.terminal-content a:hover {
+    background: #00ff00;
+    color: #000;
+    padding: 0 5px;
+}
+
+/* Loading glitch effect */
+.loading-title {
+    animation: flicker 2s infinite, glitch 0.3s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .terminal-window,
+    .core-window {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    #minimap {
+        width: 100px;
+        height: 100px;
+    }
+    
+    #coordinates {
+        font-size: 0.65rem;
+        padding: 5px;
+    }
+    
+    #system-status {
+        font-size: 0.65rem;
+        padding: 5px;
+    }
+    
+    #debug-toggle {
+        font-size: 0.7rem;
+        padding: 8px 15px;
+    }
+    
+    .loading-title {
+        font-size: 1.5rem;
+        letter-spacing: 0.2rem;
+    }
+}
+
+/* Debug Info Panel */
+#debug-info {
+    font-family: 'Courier New', monospace;
+    line-height: 1.4;
+}
+
+#debug-info div {
+    margin: 2px 0;
+}
+
+/* Focus indicators for accessibility */
+button:focus {
+    outline: 2px solid #00ff00;
+    outline-offset: 2px;
+}
+
+/* Click anywhere hint when pointer is unlocked */
+.pointer-hint {
+    position: fixed;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    color: #00ff00;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 60;
+}
