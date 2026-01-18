@@ -12,9 +12,9 @@ export class AudioManager {
         this.lastFootstepTime = 0;
         this.footstepInterval = 0.4;
         
-        // Initialize on user interaction
-        document.addEventListener('click', () => this.init(), { once: true });
-        document.addEventListener('keydown', () => this.init(), { once: true });
+        // Initialize on user interaction (DISABLED)
+        // document.addEventListener('click', () => this.init(), { once: true });
+        // document.addEventListener('keydown', () => this.init(), { once: true });
     }
 
     init() {

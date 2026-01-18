@@ -31,11 +31,11 @@ class ChaoticMainframe {
         this.renderer.shadowMap.enabled = true;
         this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 0.8;
+        this.renderer.toneMappingExposure = 1.2;
 
         // Setup scene
         this.scene = new THREE.Scene();
-        this.scene.fog = new THREE.FogExp2(0x000000, 0.015);
+        this.scene.fog = new THREE.FogExp2(0x505050, 0.015);
 
         // Setup camera
         this.camera = new THREE.PerspectiveCamera(

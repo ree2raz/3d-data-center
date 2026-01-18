@@ -265,8 +265,8 @@ export class Environment {
     }
 
     createLighting() {
-        // Ambient light (very dim)
-        const ambientLight = new THREE.AmbientLight(0x111111, 0.3);
+        // Ambient light (neutral grey, brighter for visibility)
+        const ambientLight = new THREE.AmbientLight(0x707070, 0.8);
         this.scene.add(ambientLight);
         
         // Orange warning lights (flickering)
@@ -279,14 +279,14 @@ export class Environment {
         ];
         
         warningLightPositions.forEach((pos, index) => {
-            const light = new THREE.PointLight(0xff6600, 2, 20);
+            const light = new THREE.PointLight(0xff6600, 1, 20);
             light.position.set(...pos);
             light.castShadow = true;
             light.shadow.mapSize.width = 512;
             light.shadow.mapSize.height = 512;
             light.name = `warning_light_${index}`;
             this.scene.add(light);
-            this.lights.push({ light, type: 'warning', baseIntensity: 2 });
+            this.lights.push({ light, type: 'warning', baseIntensity: 1 });
             
             // Light fixture
             const fixtureGeometry = new THREE.CylinderGeometry(0.3, 0.5, 0.5, 8);
@@ -618,13 +618,11 @@ export class Environment {
     }
 
     update(elapsed, delta) {
-        // Flicker warning lights
+        // Subtle flicker warning lights (much reduced for consistency)
         this.lights.forEach((lightData, index) => {
             if (lightData.type === 'warning') {
-                const flicker = Math.sin(elapsed * 10 + index) * 0.3 + 
-                               Math.sin(elapsed * 23 + index * 2) * 0.2 +
-                               Math.random() * 0.1;
-                lightData.light.intensity = lightData.baseIntensity * (0.7 + flicker * 0.3);
+                const flicker = Math.sin(elapsed * 2 + index) * 0.1 + Math.random() * 0.05;
+                lightData.light.intensity = lightData.baseIntensity * (0.9 + flicker * 0.1);
             }
         });
         
